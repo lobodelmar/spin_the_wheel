@@ -6,19 +6,19 @@ var data = {
     "types": ["museum", "park", "castle", "club", "gallery", "music festival",
       "public square", "school/university", "public transport", "city streets"
     ],
-    "d": 0.,
+    "start": 0.,
     "angle": 0,
     "counter": 0,
-    "amount": 360.,
-    "duration": 100.
+    "amount": 0.,
+    "duration": 0.
   },
   "technologies": {
     "types": ["GPS", "camera", "phones/tablets", "touch interfaces", "buttons", "VR", "motion sensors", "wearables"],
-    "d": 0.,
+    "start": 0.,
     "angle": 0,
     "counter": 0,
-    "amount": 360.,
-    "duration": 100.
+    "amount": 0.,
+    "duration": 0.
   }
 }
 
@@ -31,6 +31,7 @@ var ellipseWidth = window.innerHeight * 0.8
 var easeOutExpo = function(t, b, c, d) {
   return c * (-Math.pow(2, -10. * t / d) + 1) + b
 }
+
 
 function setup() {
   c = createCanvas(canvasWidth, canvasHeight)
@@ -57,11 +58,11 @@ var Wheel = function(d, title, locX, locY) {
   colorMode(HSB, d["types"].length)
   textSize(30)
   var angleDiff = 2 * PI / d["types"].length
-  d["angle"] = radians(easeOutExpo(
-    d["counter"], d["d"], d["amount"], d["duration"]))
+  d["angle"] = easeOutExpo(d["counter"], d["start"], d["amount"], d["duration"])
+  // console.log(d["angle"])
   for (var i = 0; i < d["types"].length; i++) {
     push()
-    rotate(d["angle"])
+    rotate(radians(d["angle"]))
     rotate(angleDiff * i)
     fill(i, d["types"].length, d["types"].length - 1)
     arc(0, 0, ellipseWidth, ellipseWidth, 0,
@@ -85,11 +86,11 @@ var Wheel = function(d, title, locX, locY) {
 }
 
 var spinWheels = function(d) {
-  var minAngle = 500.
-  var maxAngle = 1500.
-  d["amount"] = random(minAngle, maxAngle)
-  d["duration"] = map(
-    d["amount"], minAngle, maxAngle, 200., 1000.)
+  var minAngle = 0.
+  var maxAngle = 720.
+  d["start"] = d["angle"]
+  d["amount"] = 360 + random(minAngle, maxAngle)
+  d["duration"] = map(d["amount"], minAngle, maxAngle, 200., 500.)
   d["counter"] = 0
 }
 
@@ -99,7 +100,7 @@ var mousePressed = function() {
 }
 
 var resCanvas = function() {
-  console.log("hello is resized")
+  // console.log("hello is resized")
   globalScale = window.innerWidth / 1920
   resizeCanvas(window.innerWidth, window.innerHeight)
 }
