@@ -86,10 +86,10 @@ var Wheel = function(d, title, locX, locY) {
 
 var spinWheels = function(d) {
   var minAngle = 500.
-  var maxAngle = 1000.
+  var maxAngle = 1500.
   d["amount"] = random(minAngle, maxAngle)
   d["duration"] = map(
-    d["amount"], minAngle, maxAngle, 200., 500.)
+    d["amount"], minAngle, maxAngle, 200., 1000.)
   d["counter"] = 0
 }
 
